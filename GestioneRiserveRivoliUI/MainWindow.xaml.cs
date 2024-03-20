@@ -23,7 +23,7 @@ namespace GestioneRiserveRivoliUI
         string ScrivoValoriAAAA = "AAAA";
 
         string[] nomiVolontari = new string[2] { "Lorem Ipsum", "Pietro Negro" };
-        int[] giorniRiserva = new int[2] { 0, 30 };
+        int[] giorniRiserva = new int[2] { 0, 0 };
 
 
         private void BtnDati_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,6 @@ namespace GestioneRiserveRivoliUI
             TimeSpan differenza = dataFineRiserva - dataInizioRiserva;
             numeroGiorni = differenza.Days;
 
-            TxTInserisciNome.Content = numeroGiorni.ToString(); 
             }
             catch (System.ArgumentOutOfRangeException)
             {
@@ -65,14 +64,20 @@ namespace GestioneRiserveRivoliUI
             }
 
             string volontarioDaCercare = TxTNomeUtente.Text;
+            int indiceVolontario = 0;
 
             for (int i = 0; i < nomiVolontari.Length; i++)
             {
                 if (nomiVolontari[i] == volontarioDaCercare)
                 {
                     giorniRiserva[i] += numeroGiorni;
+                    indiceVolontario = i;
                 }
             }
+
+            giorniRiserva[indiceVolontario] += numeroGiorni;
+            MessageBox.Show("Il Volontario " + volontarioDaCercare + " ha usato in totale " + giorniRiserva[indiceVolontario] + " giorni di riserva!");
+
         }
 
         private void giornoInizio_GotFocus(object sender, RoutedEventArgs e)
