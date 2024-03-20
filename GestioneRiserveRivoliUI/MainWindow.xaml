@@ -1,0 +1,34 @@
+﻿<Window x:Class="GestioneRiserveRivoliUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestioneRiserveRivoliUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel>
+
+            <Label Content="Nome dell'utente da gestire: " x:Name="TxTInserisciNome"/>
+            <TextBox x:Name="TxTNomeUtente"/>
+            <Label Content="Inserisci la data di inizio (GG/MM/AA)"/>
+        </StackPanel>
+        <TextBox HorizontalAlignment="Left" Margin="10,75,0,0" TextWrapping="Wrap" Text="GG" VerticalAlignment="Top" Width="26" x:Name="giornoInizio" GotFocus="giornoInizio_GotFocus" LostFocus="giornoInizio_LostFocus"/>
+        <TextBox HorizontalAlignment="Left" Margin="36,75,0,0" TextWrapping="Wrap" Text="MM" VerticalAlignment="Top" Width="26" Height="18" x:Name="MeseInizio" GotFocus="MeseInizio_GotFocus" LostFocus="MeseInizio_LostFocus"/>
+        <TextBox Margin="62,75,0,0" TextWrapping="Wrap" Text="AA" VerticalAlignment="Top" x:Name="AnnoInizio" GotFocus="AnnoInizio_GotFocus" LostFocus="AnnoInizio_LostFocus" HorizontalAlignment="Left" Width="26"/>
+
+
+        <Label Content="Inserisci la data di fine (GG/MM/AA)" HorizontalAlignment="Left" Margin="6,108,0,0" VerticalAlignment="Top"/>
+
+        <TextBox HorizontalAlignment="Left" Margin="10,139,0,0" TextWrapping="Wrap" Text="GG" VerticalAlignment="Top" Width="26" x:Name="GiornoFine" GotFocus="GiornoFine_GotFocus" LostFocus="GiornoFine_LostFocus"/>
+        <TextBox HorizontalAlignment="Left" Margin="36,139,0,0" TextWrapping="Wrap" Text="MM" VerticalAlignment="Top" Width="26" Height="18" x:Name="MeseFine" GotFocus="MeseFine_GotFocus" LostFocus="MeseFine_LostFocus"/>
+        <TextBox Margin="62,139,0,0" TextWrapping="Wrap" Text="AA" VerticalAlignment="Top" x:Name="AnnoFine" GotFocus="AnnoFine_GotFocus" LostFocus="AnnoFine_LostFocus" HorizontalAlignment="Left" Width="26"/>
+        <Button Content="Carica i dati" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" Width="78" x:Name="BtnDati" Click="BtnDati_Click"/>
+
+
+
+
+
+
+    </Grid>
+</Window>
