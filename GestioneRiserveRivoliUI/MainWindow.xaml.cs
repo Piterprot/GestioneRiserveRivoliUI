@@ -75,7 +75,6 @@ namespace GestioneRiserveRivoliUI
                 }
             }
 
-            giorniRiserva[indiceVolontario] += numeroGiorni;
             MessageBox.Show("Il Volontario " + volontarioDaCercare + " ha usato in totale " + giorniRiserva[indiceVolontario] + " giorni di riserva!");
 
         }
