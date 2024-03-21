@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,6 +25,7 @@ namespace GestioneRiserveRivoliUI
 
         string[] nomiVolontari = new string[2] { "Lorem Ipsum", "Pietro Negro" };
         int[] giorniRiserva = new int[2] { 0, 0 };
+        string IndirizzoFile = @"F:\GestioneRiserveRivoliUI\GestioneRiserveRivoliUI\dati.csv";
 
 
         private void BtnDati_Click(object sender, RoutedEventArgs e)
@@ -75,6 +77,39 @@ namespace GestioneRiserveRivoliUI
                 }
             }
 
+            // LAVORO CON IL DATABASE
+
+            try
+            {
+
+            StreamReader leggoDatabase = new StreamReader(IndirizzoFile);
+            string LeggoStringa = leggoDatabase.ReadLine();
+                int stringaDaManipolare = 0; 
+                while (LeggoStringa != volontarioDaCercare)
+                {
+                    string record = leggoDatabase.ReadLine();
+                    int primaVirgola = record.IndexOf(",");
+                    string nomeVolontario = record.Substring(0, primaVirgola);
+                    int secondaVirgola = record.IndexOf(",",  primaVirgola+1);
+                    string giorniRiservaVolontari = record.Substring(primaVirgola+1, secondaVirgola-primaVirgola-1); 
+                    int giorniRiservaVolontarioInt = int.Parse(giorniRiservaVolontari);
+                    stringaDaManipolare++;
+                }
+
+
+            leggoDatabase.Close();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Errore! Non trovo il DataBase!");
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Errore! Non riesco a trovare il file!");
+            }
+            // FINISCO IL LAVORO CON IL DB
+
+            
             MessageBox.Show("Il Volontario " + volontarioDaCercare + " ha usato in totale " + giorniRiserva[indiceVolontario] + " giorni di riserva!");
 
         }
