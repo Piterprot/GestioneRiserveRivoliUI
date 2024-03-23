@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Data.SQLite;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,8 +24,6 @@ namespace GestioneRiserveRivoliUI
         string ScrivoValoriMM = "MM";
         string ScrivoValoriAAAA = "AAAA";
 
-        string[] nomiVolontari = new string[2] { "Lorem Ipsum", "Pietro Negro" };
-        int[] giorniRiserva = new int[2] { 0, 0 };
         string IndirizzoFile = @"F:\GestioneRiserveRivoliUI\GestioneRiserveRivoliUI\dati.csv";
 
 
@@ -58,7 +57,7 @@ namespace GestioneRiserveRivoliUI
             }
             catch (System.ArgumentOutOfRangeException)
             {
-                MessageBox.Show("Errore! La data inserita non è valida, riprova.");
+                MessageBox.Show("Errore! Inserisci una data valida.");
             }
             catch(System.FormatException)
             {
@@ -66,38 +65,32 @@ namespace GestioneRiserveRivoliUI
             }
 
             string volontarioDaCercare = TxTNomeUtente.Text;
-            int indiceVolontario = 0;
-
-            for (int i = 0; i < nomiVolontari.Length; i++)
-            {
-                if (nomiVolontari[i] == volontarioDaCercare)
-                {
-                    giorniRiserva[i] += numeroGiorni;
-                    indiceVolontario = i;
-                }
-            }
 
             // LAVORO CON IL DATABASE
-
             try
             {
+                StreamReader leggoDatabase = new StreamReader(IndirizzoFile);
+                string LeggoStringa = leggoDatabase.ReadLine();
+                string giorniRiservaVolontari = "";
 
-            StreamReader leggoDatabase = new StreamReader(IndirizzoFile);
-            string LeggoStringa = leggoDatabase.ReadLine();
-                int stringaDaManipolare = 0; 
-                while (LeggoStringa != volontarioDaCercare)
+                while (LeggoStringa != null)
                 {
-                    string record = leggoDatabase.ReadLine();
-                    int primaVirgola = record.IndexOf(",");
-                    string nomeVolontario = record.Substring(0, primaVirgola);
-                    int secondaVirgola = record.IndexOf(",",  primaVirgola+1);
-                    string giorniRiservaVolontari = record.Substring(primaVirgola+1, secondaVirgola-primaVirgola-1); 
-                    int giorniRiservaVolontarioInt = int.Parse(giorniRiservaVolontari);
-                    stringaDaManipolare++;
+                    int primaVirgola = LeggoStringa.IndexOf(",");
+                    string nomeVolontario = LeggoStringa.Substring(0, primaVirgola);
+
+                    if (nomeVolontario == volontarioDaCercare)
+                    {
+                        giorniRiservaVolontari = LeggoStringa.Substring(primaVirgola + 1);
+                        break; // Esci dal ciclo se il volontario è stato trovato
+                    }
+
+                    LeggoStringa = leggoDatabase.ReadLine(); // Leggi la prossima riga
                 }
 
 
-            leggoDatabase.Close();
+                MessageBox.Show(giorniRiservaVolontari);
+
+                leggoDatabase.Close();
             }
             catch (FileNotFoundException)
             {
@@ -109,8 +102,6 @@ namespace GestioneRiserveRivoliUI
             }
             // FINISCO IL LAVORO CON IL DB
 
-            
-            MessageBox.Show("Il Volontario " + volontarioDaCercare + " ha usato in totale " + giorniRiserva[indiceVolontario] + " giorni di riserva!");
 
         }
 
