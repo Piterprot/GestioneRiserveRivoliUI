@@ -22,7 +22,7 @@ namespace GestioneRiserveRivoliUI
         }
         string ScrivoValoriGG = "GG";
         string ScrivoValoriMM = "MM";
-        string ScrivoValoriAAAA = "AAAA";
+        string ScrivoValoriAAAA = "AA";
 
         string IndirizzoFile = @"F:\GestioneRiserveRivoliUI\GestioneRiserveRivoliUI\dati.csv";
 
@@ -70,8 +70,11 @@ namespace GestioneRiserveRivoliUI
             try
             {
                 StreamReader leggoDatabase = new StreamReader(IndirizzoFile);
+
                 string LeggoStringa = leggoDatabase.ReadLine();
                 string giorniRiservaVolontari = "";
+                int giorniRiservaVolontariToInt = 0;
+
 
                 while (LeggoStringa != null)
                 {
@@ -81,6 +84,11 @@ namespace GestioneRiserveRivoliUI
                     if (nomeVolontario == volontarioDaCercare)
                     {
                         giorniRiservaVolontari = LeggoStringa.Substring(primaVirgola + 1);
+                        giorniRiservaVolontariToInt = int.Parse(giorniRiservaVolontari);
+                        giorniRiservaVolontariToInt += numeroGiorni;
+                        giorniRiservaVolontari = giorniRiservaVolontariToInt.ToString();
+                        MessageBox.Show("Il volontario " + nomeVolontario + " ha " + giorniRiservaVolontari + " giorni di riserva.");
+
                         break; // Esci dal ciclo se il volontario è stato trovato
                     }
 
@@ -88,7 +96,6 @@ namespace GestioneRiserveRivoliUI
                 }
 
 
-                MessageBox.Show(giorniRiservaVolontari);
 
                 leggoDatabase.Close();
             }
@@ -107,31 +114,49 @@ namespace GestioneRiserveRivoliUI
 
         private void giornoInizio_GotFocus(object sender, RoutedEventArgs e)
         {
-            giornoInizio.Text = "";
+            if (giornoInizio.Text == "" || giornoInizio.Text == ScrivoValoriGG)
+            {
+                giornoInizio.Text = "";
+            }
         }
 
         private void MeseInizio_GotFocus(object sender, RoutedEventArgs e)
         {
+            if (MeseInizio.Text == "" || MeseInizio.Text == ScrivoValoriMM)
+            {
             MeseInizio.Text = "";
+            }
         }
 
         private void AnnoInizio_GotFocus(object sender, RoutedEventArgs e)
         {
+            if (AnnoInizio.Text == "" || AnnoInizio.Text == ScrivoValoriAAAA)
+            {
             AnnoInizio.Text = "";
+            }
         }
 
         private void GiornoFine_GotFocus(object sender, RoutedEventArgs e)
         {
+            if (GiornoFine.Text == "" || GiornoFine.Text == ScrivoValoriGG)
+            {
             GiornoFine.Text = "";
+            }
         }
         private void MeseFine_GotFocus(object sender, RoutedEventArgs e)
         {
+            if (MeseFine.Text == "" || MeseFine.Text == ScrivoValoriMM)
+            {
             MeseFine.Text = "";
+            }
 
         }
         private void AnnoFine_GotFocus(object sender, RoutedEventArgs e)
         {
-            AnnoFine.Text = "";
+            if (AnnoFine.Text == "" || AnnoFine.Text == ScrivoValoriAAAA)
+            {
+                AnnoFine.Text = "";
+            }
         }
 
 
