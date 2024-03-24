@@ -24,8 +24,6 @@ namespace GestioneRiserveRivoliUI
         string ScrivoValoriMM = "MM";
         string ScrivoValoriAAAA = "AA";
 
-        string IndirizzoFile = @"F:\GestioneRiserveRivoliUI\GestioneRiserveRivoliUI\dati.csv";
-
 
         private void BtnDati_Click(object sender, RoutedEventArgs e)
         {
@@ -66,48 +64,32 @@ namespace GestioneRiserveRivoliUI
 
             string volontarioDaCercare = TxTNomeUtente.Text;
 
-            // LAVORO CON IL DATABASE
-            try
-            {
-                StreamReader leggoDatabase = new StreamReader(IndirizzoFile);
-
-                string LeggoStringa = leggoDatabase.ReadLine();
-                string giorniRiservaVolontari = "";
-                int giorniRiservaVolontariToInt = 0;
+            
 
 
-                while (LeggoStringa != null)
-                {
-                    int primaVirgola = LeggoStringa.IndexOf(",");
-                    string nomeVolontario = LeggoStringa.Substring(0, primaVirgola);
+            // LAVORO CON IL DATABASE SQLITE
 
-                    if (nomeVolontario == volontarioDaCercare)
-                    {
-                        giorniRiservaVolontari = LeggoStringa.Substring(primaVirgola + 1);
-                        giorniRiservaVolontariToInt = int.Parse(giorniRiservaVolontari);
-                        giorniRiservaVolontariToInt += numeroGiorni;
-                        giorniRiservaVolontari = giorniRiservaVolontariToInt.ToString();
-                        MessageBox.Show("Il volontario " + nomeVolontario + " ha " + giorniRiservaVolontari + " giorni di riserva.");
+            // Faccio il setup del database
+            var connectionStringMemory = "Data Source=:memory:";
+            var connectionStringFile = "Data Source=dati.db";
 
-                        break; // Esci dal ciclo se il volontario è stato trovato
-                    }
+            using var connection = new SQLiteConnection(connectionStringMemory);
+            connection.Open();
 
-                    LeggoStringa = leggoDatabase.ReadLine(); // Leggi la prossima riga
-                }
+            // Creo la tabella e inserisco i dati nella stessa transazione
+            using var transaction = connection.BeginTransaction();
+            using var cmd = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Dati" +
+                                              "(ID INTEGER PRIMARY KEY, nome TEXT, GiorniRiserva INTEGER)", connection);
+            cmd.ExecuteNonQuery();
 
+            using var paracmd = new SQLiteCommand("INSERT INTO Dati (nome) VALUES (@nome)", connection);
+            paracmd.Parameters.AddWithValue("@nome", "Pietro Negro");
+            paracmd.Parameters.AddWithValue("@GiorniRiserva", "15");
+            paracmd.ExecuteNonQuery();
+            transaction.Commit();
 
-
-                leggoDatabase.Close();
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("Errore! Non trovo il DataBase!");
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("Errore! Non riesco a trovare il file!");
-            }
-            // FINISCO IL LAVORO CON IL DB
+            using var readcmd = new SQLiteCommand("SELECT * FROM Dati", connection);
+            using var reader = readcmd.ExecuteReader();
 
 
         }
@@ -211,4 +193,5 @@ namespace GestioneRiserveRivoliUI
             }
         }
     }
+
 }
